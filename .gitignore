@@ -1,0 +1,15 @@
+node_modules/
+.env
+.venv-whisper/
+.whisper-models/
+eng.traineddata
+dist/
+bin/
+.DS_Store
+*.log
+profile/*
+!profile/.gitkeep
+docs/
+CLAUDE.md
+native/live-stt/live-stt
+native/live-stt/_CodeSignature/

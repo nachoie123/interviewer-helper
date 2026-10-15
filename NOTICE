@@ -1,0 +1,10 @@
+Interviewer Helper
+Copyright 2026 Ignacio San Benito
+
+This product is a modified version of OpenCluely
+(https://github.com/TechyCSR/OpenCluely), copyright TechyCSR,
+licensed under the Apache License, Version 2.0 (see LICENSE).
+
+Main changes: Groq for transcription and answers, live on-device words,
+a single answer card, a user-supplied profile and API key, and a signed,
+notarized macOS installer.

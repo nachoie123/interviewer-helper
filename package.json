@@ -1,0 +1,195 @@
+{
+  "name": "opencluely",
+  "version": "1.0.0",
+  "description": "Live answers for calls and interviews, on your own free Groq key",
+  "main": "main.js",
+  "scripts": {
+    "start": "env -u ELECTRON_RUN_AS_NODE electron .",
+    "dev": "env -u ELECTRON_RUN_AS_NODE electron . --no-sandbox --disable-gpu",
+    "test-speech": "node scripts/test-speech.js",
+    "build": "electron-builder",
+    "build:mac": "electron-builder --mac",
+    "build:win": "electron-builder --win",
+    "build:linux": "electron-builder --linux",
+    "build:all": "electron-builder --mac --win --linux",
+    "dist": "npm run build",
+    "pack": "electron-builder --dir",
+    "clean": "rm -rf dist/",
+    "rebuild": "npm run clean && npm run build",
+    "release": "npm run clean && npm run build:all",
+    "postinstall": "electron-builder install-app-deps",
+    "install-app": "bash scripts/install-app.sh",
+    "practice-report": "node scripts/practice-report.js"
+  },
+  "author": {
+    "name": "Ignacio San Benito",
+    "url": "https://nachosanbenito.com"
+  },
+  "contributors": [
+    "TechyCSR <info@techycsr.dev> (https://techycsr.dev): original OpenCluely"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nachoie123/interviewer-helper"
+  },
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^7.2.0",
+    "@google/genai": "^2.9.0",
+    "dotenv": "^16.3.1",
+    "markdown": "^0.5.0",
+    "marked": "^15.0.12",
+    "microsoft-cognitiveservices-speech-sdk": "^1.40.0",
+    "node-record-lpcm16": "^1.0.1",
+    "prismjs": "^1.30.0",
+    "winston": "^3.17.0",
+    "winston-daily-rotate-file": "^4.7.1"
+  },
+  "devDependencies": {
+    "electron": "^29.1.0",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.nachosanbenito.interviewerhelper",
+    "productName": "Interviewer Helper",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "**/*",
+      "!dist/**/*",
+      "!*.md",
+      "!.git/**/*",
+      "!.env*",
+      "!.venv-whisper/**/*",
+      "!.whisper-models/**/*",
+      "!bin/**/*",
+      "!scripts/__pycache__/**/*",
+      "!**/*.pyc",
+      "!eng.traineddata",
+      "!native/**/*",
+      "!profile/**/*",
+      "!examples/**/*",
+      "!docs/**/*",
+      "!webapp/**/*"
+    ],
+    "asarUnpack": [
+      "assests/icons/**/*",
+      "prompts/**/*",
+      "scripts/whisper_worker.py"
+    ],
+    "mac": {
+      "category": "public.app-category.utilities",
+      "target": [
+        {
+          "target": "dir",
+          "arch": [
+            "arm64"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "arm64"
+          ]
+        }
+      ],
+      "darkModeSupport": true,
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "extendInfo": {
+        "NSMicrophoneUsageDescription": "Interviewer Helper listens to your call to show the words live and suggest answers.",
+        "NSSpeechRecognitionUsageDescription": "Interviewer Helper shows the words of your call live using on-device speech recognition.",
+        "NSScreenCaptureUsageDescription": "Interviewer Helper reads a question on your screen when you press Cmd+Shift+S."
+      },
+      "icon": "assests/opencluely.png",
+      "identity": "Ignacio San Benito (4HBV76K3X6)",
+      "notarize": true,
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.plist"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
+      ],
+      "sign": null
+    },
+    "linux": {
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "deb",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "assests/icons/app-icon.png",
+      "category": "Utility"
+    },
+    "deb": {
+      "depends": [
+        "libgtk-3-0",
+        "libnotify4",
+        "libnss3",
+        "libxss1",
+        "libxtst6",
+        "xauth",
+        "libasound2t64",
+        "libgbm1",
+        "python3 (>= 3.10)",
+        "python3-venv",
+        "python3-pip"
+      ],
+      "recommends": [
+        "ffmpeg"
+      ],
+      "fpm": [
+        "--after-install=scripts/post-install-deb.sh"
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "perMachine": false,
+      "include": "scripts/post-install-nsis.nsh",
+      "deleteAppDataOnUninstall": false,
+      "artifactName": "OpenCluely-Setup-${version}.${ext}"
+    },
+    "dmg": {
+      "title": "Interviewer Helper",
+      "backgroundColor": "#000000",
+      "window": {
+        "width": 600,
+        "height": 400
+      }
+    },
+    "extraResources": [
+      {
+        "from": "native/live-stt/live-stt",
+        "to": "live-stt/live-stt"
+      }
+    ]
+  },
+  "productName": "Interviewer Helper"
+}

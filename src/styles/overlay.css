@@ -1,0 +1,61 @@
+/* Cluely-style overlay tokens, shared by the bar (index.html), the answer panel
+   (llm-response.html) and the transcript (chat.html). Values taken from the
+   overlay demo markup on cluely.com. */
+:root {
+  --glass: linear-gradient(180deg, hsla(252, 10%, 10%, 0.78) 0%, hsla(252, 10%, 10%, 0.86) 100%);
+  --panel: hsla(252, 10%, 10%, 0.84);           /* flat fill shared by bar + answer card so the seam disappears */
+  --edge: rgba(214, 226, 255, 0.26);            /* ring around every surface */
+  --edge-soft: rgba(255, 255, 255, 0.08);       /* inner hairlines */
+  --top-light: inset 0 1px 0 0 rgba(255, 255, 255, 0.16);
+  --text: #edeef2;
+  --muted: #b2b3ba;
+  --faint: #898b91;
+  --btn: linear-gradient(180deg, #2e3039 0%, #272a31 100%);
+  --btn-light: inset 0 0.7px 0 0 #afb3c4;
+  --blue: linear-gradient(180deg, #0544a9 0%, #022c70 100%);
+  --blue-light: 0 0 0 0.5px #0c44a1, inset 0 -1px 0 0 #022c70, inset 0 0.5px 0 0 #81b6ff;
+  --live: #ff5a5f;
+  --ok: #3ddc84;
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", Inter, system-ui, sans-serif;
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Glass surface: dark, slightly purple-grey, hairline ring, lit top edge */
+.glass {
+  background: var(--glass);
+  border: 1px solid var(--edge);
+  box-shadow: var(--top-light);
+  -webkit-backdrop-filter: blur(24px) saturate(140%);
+  backdrop-filter: blur(24px) saturate(140%);
+}
+
+/* Raised dark button (Cluely "Hide" / stop buttons) */
+.raised {
+  background: var(--btn);
+  box-shadow: var(--btn-light);
+  color: #fff;
+}
+
+/* Keyboard hint caps */
+.key {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 17px;
+  height: 18px;
+  padding: 0 3px;
+  box-sizing: border-box;
+  border-radius: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.18));
+  color: rgba(255, 255, 255, 0.62);
+  font: 500 10.5px/1 var(--font);
+  letter-spacing: 0;
+}
+.keys { display: inline-flex; gap: 2px; }
+
+.ico { width: 15px; height: 15px; flex-shrink: 0; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}
