@@ -138,9 +138,9 @@
   // ── Boot ──────────────────────────────────────────────────────────
   showScreen('welcome');
   // Reopened from the ··· menu: jump straight to the key or profile screen
-  window.electronAPI.receive('onboarding-goto', (_e, screen) => {
-    if (ORDER.includes(screen)) showScreen(screen);
-  });
+  const goTo = (screen) => { if (ORDER.includes(screen)) showScreen(screen); };
+  window.electronAPI.receive('onboarding-goto', (_e, screen) => goTo(screen));
+  window.electronAPI.getSetupScreen().then(goTo).catch(() => {});
   window.electronAPI.getFirstRunStatus().then((s) => {
     if (s && s.groqConfigured) {
       state.groqConfigured = true;

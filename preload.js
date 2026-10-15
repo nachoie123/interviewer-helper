@@ -46,6 +46,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   saveProfile: (text) => ipcRenderer.invoke('save-profile', text),
   pickProfileFile: () => ipcRenderer.invoke('pick-profile-file'),
   openSetup: (screen) => ipcRenderer.invoke('open-setup', screen),
+  getSetupScreen: () => ipcRenderer.invoke('get-setup-screen'),
   saveSettings: (settings) => ipcRenderer.invoke('save-settings', settings),
 
   // First-run onboarding

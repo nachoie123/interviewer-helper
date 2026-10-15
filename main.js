@@ -798,12 +798,13 @@ class ApplicationController {
       return llmService.reloadProfile();
     });
     // ··· menu → reopen the setup wizard on the key or profile screen
+    // A new wizard window asks for the screen when its script starts (get-setup-screen); an open one gets it pushed.
     ipcMain.handle("open-setup", async (_event, screen) => {
+      this._setupScreen = screen;
       const win = await windowManager.showOnboarding();
-      if (!win) return;
-      const go = () => win.webContents.send("onboarding-goto", screen);
-      if (win.webContents.isLoading()) win.webContents.once("did-finish-load", go); else go();
+      if (win) win.webContents.send("onboarding-goto", screen);
     });
+    ipcMain.handle("get-setup-screen", () => this._setupScreen || null);
     ipcMain.handle("pick-profile-file", async () => {
       const { dialog } = require("electron");
       const r = await dialog.showOpenDialog({ properties: ["openFile"], filters: [{ name: "Profile", extensions: ["md", "txt"] }] });
@@ -868,6 +869,7 @@ class ApplicationController {
 
     // Close the onboarding wizard window.
     ipcMain.handle("close-onboarding", () => {
+      this._setupScreen = null;
       try {
         windowManager.closeOnboarding();
         return { success: true };
