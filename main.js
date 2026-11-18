@@ -298,6 +298,7 @@ class ApplicationController {
 
       this.starting = false;
       this.isReady = true;
+      this.setupAutoUpdates();
 
       // Launch the onboarding wizard if this is the first run.
       if (this.isFirstRun) {
@@ -361,6 +362,22 @@ class ApplicationController {
     });
     
     logger.debug('Network configuration applied for Gemini API');
+  }
+
+  // Updates itself from GitHub Releases (latest-mac.yml + zip): checks at launch and once a day,
+  // downloads in the background and installs when the app quits. Only in the packaged app.
+  setupAutoUpdates() {
+    if (!app.isPackaged) return;
+    try {
+      const { autoUpdater } = require("electron-updater");
+      autoUpdater.logger = logger;
+      const check = () =>
+        autoUpdater.checkForUpdates().catch((e) => logger.warn("Update check failed", { error: e.message }));
+      check();
+      setInterval(check, 24 * 60 * 60 * 1000);
+    } catch (e) {
+      logger.warn("Auto-update unavailable", { error: e.message });
+    }
   }
 
   setupPermissions() {
