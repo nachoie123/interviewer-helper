@@ -254,6 +254,15 @@
             color: var(--text);
             margin-bottom: 8px;
         }
+        .key-steps {
+            margin: 0 0 18px;
+            padding-left: 20px;
+            color: var(--text-dim);
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        .key-steps li { margin: 0 0 8px; padding-left: 4px; }
+        .key-steps b { color: var(--text); font-weight: 600; }
         .field .hint {
             font-size: 11.5px;
             color: var(--text-faint);
@@ -741,13 +750,19 @@
 
             <!-- SCREEN 2: Groq API key -->
             <section class="screen" data-screen="apikey">
-                <h1>Add your Groq API key</h1>
+                <h1>Get your free Groq key</h1>
                 <p class="subtitle">
-                    Interviewer Helper uses Groq to hear the call and write the answers. The key is free.
+                    Interviewer Helper uses Groq to hear the call and write the answers. It's free and takes a minute.
                 </p>
 
+                <ol class="key-steps">
+                    <li><button class="btn primary" id="getKey" type="button"><i class="fas fa-arrow-up-right-from-square"></i> Get my free key</button></li>
+                    <li>Sign in (your Google account works), click <b>Create API Key</b>, then <b>Copy</b>.</li>
+                    <li>Come back here: the key fills in by itself.</li>
+                </ol>
+
                 <div class="field">
-                    <label for="groqKey">Groq API Key</label>
+                    <label for="groqKey">Your key</label>
                     <div class="input-wrap">
                         <i class="fas fa-key icon"></i>
                         <input
@@ -763,9 +778,7 @@
                         </button>
                     </div>
                     <div class="hint">
-                        Don't have one? Create a free key at
-                        <a href="https://console.groq.com/keys" target="_blank" rel="noreferrer">console.groq.com/keys</a>.
-                        It's stored only on this Mac and sent only to Groq. You can change it later in the ··· menu.
+                        Stored only on this Mac and sent only to Groq. You can change it later in the ··· menu.
                     </div>
                     <div id="keyStatus" class="status-pill idle" style="display:none;">
                         <i class="fas fa-circle-info"></i>

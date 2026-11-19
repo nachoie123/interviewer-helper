@@ -527,6 +527,25 @@ class ApplicationController {
       }
     });
     
+    // Onboarding: a Groq key the user just copied (only gsk_… text, nothing else
+    // on the clipboard is handed to the page) and a live check that the key works.
+    ipcMain.handle("clipboard-groq-key", () => {
+      const { clipboard } = require("electron");
+      const text = clipboard.readText().trim();
+      return /^gsk_[A-Za-z0-9]{20,}$/.test(text) ? text : "";
+    });
+    ipcMain.handle("check-groq-key", async (_event, key) => {
+      try {
+        const res = await fetch("https://api.groq.com/openai/v1/models", {
+          headers: { Authorization: `Bearer ${String(key || "")}` },
+          signal: AbortSignal.timeout(8000),
+        });
+        return { ok: res.ok, status: res.status };
+      } catch (e) {
+        return { ok: false, offline: true };
+      }
+    });
+
     ipcMain.handle("get-speech-availability", () => {
       return speechService.isAvailable ? speechService.isAvailable() : false;
     });

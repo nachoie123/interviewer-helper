@@ -53,6 +53,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
   getFirstRunStatus: () => ipcRenderer.invoke('get-first-run-status'),
   completeFirstRun: () => ipcRenderer.invoke('complete-first-run'),
   openExternal: (url) => ipcRenderer.invoke('open-external', url),
+  clipboardGroqKey: () => ipcRenderer.invoke('clipboard-groq-key'),
+  checkGroqKey: (key) => ipcRenderer.invoke('check-groq-key', key),
   closeOnboarding: () => ipcRenderer.invoke('close-onboarding'),
   detectWhisper: () => ipcRenderer.invoke('detect-whisper'),
   installWhisper: () => ipcRenderer.invoke('install-whisper'),

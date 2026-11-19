@@ -57,12 +57,41 @@
     keyStatus.querySelector('.text').textContent = text;
   }
 
+  let checked = '';
+  let rejected = '';
+  async function checkKey() {
+    const key = state.groqKey;
+    if (!/^gsk_/.test(key) || key === checked) return;
+    checked = key;
+    setKeyStatus('idle', 'Checking your key…');
+    const r = await window.electronAPI.checkGroqKey(key);
+    if (key !== state.groqKey) return;
+    if (r.ok) setKeyStatus('success', 'Key works');
+    else if (r.offline) setKeyStatus('idle', 'Key entered (couldn\'t check it: no internet?)');
+    else { rejected = key; setKeyStatus('error', 'Groq says this key doesn\'t work. Copy it again from the Groq page.'); }
+  }
+
   keyInput.addEventListener('input', () => {
     state.groqKey = keyInput.value.trim();
     if (!state.groqKey) keyStatus.style.display = 'none';
-    else setKeyStatus(/^gsk_/.test(state.groqKey) ? 'idle' : 'error',
-      /^gsk_/.test(state.groqKey) ? 'Key entered' : 'Groq keys start with gsk_');
+    else if (!/^gsk_/.test(state.groqKey)) setKeyStatus('error', 'Groq keys start with gsk_');
+    else checkKey();
   });
+
+  $('#getKey').addEventListener('click', () => {
+    window.electronAPI.openExternal('https://console.groq.com/keys');
+  });
+
+  // Key copied in the browser: fill it in. The wizard is a floating panel that
+  // never gets a focus event back, so look at the clipboard while this step shows.
+  setInterval(async () => {
+    const typed = keyInput.value.trim();
+    if (currentScreenName() !== 'apikey' || (typed && typed !== rejected)) return;
+    const key = await window.electronAPI.clipboardGroqKey();
+    if (!key || key === typed) return;
+    keyInput.value = key;
+    keyInput.dispatchEvent(new Event('input'));
+  }, 1000);
 
   $('#toggleVis').addEventListener('click', () => {
     const showing = keyInput.type === 'text';
@@ -115,6 +144,10 @@
       }
       if (state.groqKey && !/^gsk_/.test(state.groqKey)) {
         setKeyStatus('error', 'Groq keys start with gsk_');
+        return;
+      }
+      if (state.groqKey && state.groqKey === rejected) {
+        setKeyStatus('error', 'Groq says this key doesn\'t work. Copy it again from the Groq page.');
         return;
       }
       if (state.groqKey) await window.electronAPI.saveSettings({ groqKey: state.groqKey });
