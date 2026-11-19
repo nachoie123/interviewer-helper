@@ -1486,8 +1486,15 @@ class SpeechService extends EventEmitter {
       candidates.push({ command: 'whisper.exe', baseArgs: [], source: 'system PATH (exe)' });
       candidates.push({ command: 'py', baseArgs: ['-3', '-m', 'whisper'], source: 'py launcher' });
     }
-    candidates.push({ command: 'python3', baseArgs: ['-m', 'whisper'], source: 'python3 module' });
-    candidates.push({ command: 'python', baseArgs: ['-m', 'whisper'], source: 'python module' });
+    // On a Mac without Apple's developer tools, /usr/bin/python3 is a stub that pops
+    // "install the command line developer tools" at the user. Don't poke it.
+    const stubPython = process.platform === 'darwin'
+      && !fs.existsSync('/Library/Developer/CommandLineTools/usr/bin/python3')
+      && !fs.existsSync('/Applications/Xcode.app');
+    if (!stubPython) {
+      candidates.push({ command: 'python3', baseArgs: ['-m', 'whisper'], source: 'python3 module' });
+      candidates.push({ command: 'python', baseArgs: ['-m', 'whisper'], source: 'python module' });
+    }
 
     for (const candidate of candidates) {
       if (!candidate || !candidate.command) {
