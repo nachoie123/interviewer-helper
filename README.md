@@ -7,7 +7,7 @@ A small panel for macOS that listens to your call or interview and writes an ans
 - Uses your own profile (CV or a few lines about you) for "tell me about yourself" questions. Without one, personal answers get `[your example]` placeholders instead of invented facts.
 - ⌘⇧S reads a question on your screen (needs Screen Recording permission).
 
-**Download:** [Interviewer-Helper-1.0.0.pkg](https://github.com/nachoie123/interviewer-helper/releases/latest) for Apple Silicon Macs. Signed and notarized. Free.
+**Download:** [Interviewer-Helper-1.1.1.pkg](https://github.com/nachoie123/interviewer-helper/releases/latest) for Apple Silicon Macs. Signed and notarized. Free.
 
 ## What you need
 
