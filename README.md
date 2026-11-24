@@ -13,7 +13,7 @@ A small panel for macOS that listens to your call or interview and writes an ans
 
 A free Groq API key from [console.groq.com/keys](https://console.groq.com/keys). The app asks for it on first launch. Transcription and answers run on Groq's free tier (about 1,000 answers a day).
 
-Your key and profile stay on your Mac, in `~/Library/Application Support/Interviewer Helper/` (`.env` and `profile.md`). Change them any time from the ··· menu. A sample profile is in [`examples/sample-profile.md`](examples/sample-profile.md).
+To answer, the app sends Groq the audio of each sentence, your profile and any screenshot you take. Your key and profile are saved only on your Mac, in `~/Library/Application Support/Interviewer Helper/` (`.env` and `profile.md`). Change them any time from the ··· menu. A sample profile is in [`examples/sample-profile.md`](examples/sample-profile.md).
 
 ## Shortcuts
 
